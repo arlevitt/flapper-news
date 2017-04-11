@@ -116,6 +116,18 @@ router.put('/posts/:post/downvote', auth, function(req, res, next) {
     });
 });
 
+router.put('/posts/:post/updateTitle', auth, function(req, res, next) {
+    var post = new Post(req.body);
+
+    post.updateTitle(function(err, post){
+        if (err) {
+            return next(err);
+        }
+
+        res.json(post);
+    });
+});
+
 router.post('/posts/:post/comments', auth, function(req, res, next) {
     var comment = new Comment(req.body);
     comment.post = req.post;

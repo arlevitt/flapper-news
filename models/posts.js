@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var logger = console;
 
 var PostSchema = new mongoose.Schema({
     title: String,
@@ -18,9 +19,13 @@ PostSchema.methods.downvote = function(cb) {
     this.save(cb);
 };
 
+PostSchema.methods.updateTitle = function(db) {
+    PostModel.update(this, db);
+};
+
 PostSchema.methods.comment = function(cb) {
     this.comments.push
     this.save(cb);
 };
 
-mongoose.model('Post', PostSchema);
+var PostModel = mongoose.model('Post', PostSchema);

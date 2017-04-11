@@ -121,11 +121,17 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
 
     o.create = function(post) {
         return $http.post('/posts', post, {
-            headers: { Authorization: 'Bearer ' + auth.getToken() }
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
         }).then(function(res){
             o.posts.push(res.data);
         });
     };
+
+    o.updateTitle = function(post) {
+        return $http.put('/posts/' + post._id + '/updateTitle', post, {
+            headers: { Authorization: 'Bearer ' + auth.getToken()}
+        });
+    }
 
     o.upvote = function(post) {
         return $http.put('/posts/' + post._id + '/upvote', null, {
@@ -233,11 +239,12 @@ app.controller('MainCtrl', [
 
 app.controller('PostsCtrl', [
     '$scope',
-    '$stateParams',
     'posts',
     'post',
-    function($scope, $stateParams, posts, post){
+    'auth',
+    function($scope, posts, post, auth){
         $scope.post = post;
+        $scope.isLoggedIn = auth.isLoggedIn;
 
         $scope.addComment = function() {
             if($scope.body === '') { return; }
@@ -257,4 +264,8 @@ app.controller('PostsCtrl', [
         $scope.dencrementUpvotes = function(comment) {
             posts.downvoteComment(post, comment);
         };
+
+        $scope.updateTitle = function() {
+           posts.updateTitle(post);
+        }
     }]);
