@@ -48,6 +48,6 @@ router.post('/login', function(req, res, next){
 
 //require('./posts.js')(router);
 var postsRoutes = require('./posts.js');
-router.use('/posts', postsRoutes);
+router.use(postsRoutes);
 
 module.exports = router;

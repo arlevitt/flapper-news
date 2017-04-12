@@ -12,9 +12,11 @@ var Post = mongoose.model('Post');
 var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
 
-router.get('/posts', function(req, res, next) {
-    Post.find(function(err, posts){
-        if(err){ return next(err); }
+router.get('/posts', function (req, res, next) {
+    Post.find(function (err, posts) {
+        if (err) {
+            return next(err);
+        }
 
         res.json(posts);
     });
