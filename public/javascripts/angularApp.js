@@ -119,6 +119,13 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
         });
     };
 
+    o.findByAuthor = function(author) {
+        return $http.get('/posts?author=' + author).then(function(res){
+            angular.copy(res.data, o.posts);
+            return res.data;
+        });
+    };
+
     o.create = function(post) {
         return $http.post('/posts', post, {
             headers: {Authorization: 'Bearer ' + auth.getToken()}
@@ -227,6 +234,13 @@ app.controller('MainCtrl', [
         $scope.test = 'Hello world3!';
         $scope.posts = posts.posts;
         $scope.isLoggedIn = auth.isLoggedIn;
+        $scope.query = null;
+
+        $scope.findPostsByAuthor = function() {
+            posts.findByAuthor($scope.query).then(function(data) {
+                $scope.posts = data;
+            });
+        };
 
         $scope.addPost = function(){
           if(!$scope.title || $scope.title === '') { return; }

@@ -13,13 +13,19 @@ var Comment = mongoose.model('Comment');
 var User = mongoose.model('User');
 
 router.get('/posts', function (req, res, next) {
-    Post.find(function (err, posts) {
+    var queryCallback = function (err, posts) {
         if (err) {
             return next(err);
         }
 
         res.json(posts);
-    });
+    };
+
+    if (req.query.author) {
+        Post.find({ 'author': req.query.author }, queryCallback);
+    } else {
+        Post.find(queryCallback);
+    }
 });
 
 router.post('/posts', auth, function (req, res, next) {

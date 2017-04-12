@@ -7,7 +7,11 @@
     <script src="http://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.3.2/angular-ui-router.js"></script>
     <script src="/javascripts/angularApp.js"></script>
 
-    <style> .glyphicon-thumbs-up { cursor:pointer } </style>
+    <style>
+      .glyphicon-thumbs-up { cursor:pointer }
+      .glyphicon-thumbs-down { cursor:pointer }
+      .glyphicon-trash { cursor:pointer }
+    </style>
   </head>
 
   <body ng-app="flapperNews" ng-controller="MainCtrl">
@@ -29,6 +33,10 @@
     <script type="text/ng-template" id="/home.html">
       <div class="page-header">
         <h1>Flapper News</h1>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="text" placeholder="Search by Author" ng-model="query">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit" ng-click="findPostsByAuthor()">Search</button>
+        </form>
       </div>
 
       <div ng-repeat="post in posts | orderBy:'-upvotes'">
