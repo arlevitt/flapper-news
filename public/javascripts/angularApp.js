@@ -127,6 +127,15 @@ app.factory('posts', ['$http', 'auth', function($http, auth){
         });
     };
 
+    o.delete = function(post) {
+        return $http.delete('/posts/' + post._id , {
+            headers: {Authorization: 'Bearer ' + auth.getToken()}
+        }).then(function(res){
+            var index = o.posts.indexOf(post);
+            o.posts.splice(index, 1);
+        });
+    };
+
     o.updateTitle = function(post) {
         return $http.put('/posts/' + post._id + '/updateTitle', post, {
             headers: { Authorization: 'Bearer ' + auth.getToken()}
@@ -213,12 +222,13 @@ app.controller('NavCtrl', [
     }]);
 
 app.controller('MainCtrl', [
-    '$scope', 'posts',
-    function($scope, posts){
-      $scope.test = 'Hello world3!';
-      $scope.posts = posts.posts;
+    '$scope', 'posts', 'auth',
+    function($scope, posts, auth){
+        $scope.test = 'Hello world3!';
+        $scope.posts = posts.posts;
+        $scope.isLoggedIn = auth.isLoggedIn;
 
-      $scope.addPost = function(){
+        $scope.addPost = function(){
           if(!$scope.title || $scope.title === '') { return; }
           posts.create({
               title: $scope.title,
@@ -228,11 +238,15 @@ app.controller('MainCtrl', [
           $scope.link = '';
       };
 
-      $scope.incrementUpvotes = function(post) {
+        $scope.deletePost = function(post) {
+            posts.delete(post);
+        };
+
+        $scope.incrementUpvotes = function(post) {
           posts.upvote(post);
       };
 
-    $scope.dencrementUpvotes = function(post) {
+        $scope.dencrementUpvotes = function(post) {
         posts.downvote(post);
     };
 }]);

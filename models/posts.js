@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-var logger = console;
 
 var PostSchema = new mongoose.Schema({
     title: String,
@@ -20,7 +19,7 @@ PostSchema.methods.downvote = function(cb) {
 };
 
 PostSchema.methods.updateTitle = function(db) {
-    PostModel.update(this, db);
+    PostModel.findByIdAndUpdate(this._id, this, db);
 };
 
 PostSchema.methods.comment = function(cb) {
