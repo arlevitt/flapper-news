@@ -46,8 +46,12 @@ router.post('/login', function(req, res, next){
     })(req, res, next);
 });
 
-//require('./posts.js')(router);
-var postsRoutes = require('./posts.js');
-router.use(postsRoutes);
+// better to use ioc
+require('./posts.js')(router);
+
+// https://www.mongodb.com/blog/post/the-mean-stack-mistakes-youre-probably-making
+// this approach requires an extra declaration of var router = express.Router();
+//var postsRoutes = require('./posts.js');
+//router.use(postsRoutes);
 
 module.exports = router;
